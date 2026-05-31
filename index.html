@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Profesores</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f0; color: #1a1a1a; }
+
+  /* TOPBAR */
+  .topbar {
+    background: #1a3a2a; color: white;
+    padding: 0 24px; height: 54px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; }
+  .logo-icon { width: 30px; height: 30px; background: #4caf82; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .nav { display: flex; gap: 4px; }
+  .nav-btn {
+    background: transparent; border: none; color: rgba(255,255,255,0.7);
+    padding: 7px 14px; border-radius: 7px; font-size: 14px; cursor: pointer;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+  .nav-btn.active { background: rgba(255,255,255,0.18); color: white; font-weight: 500; }
+
+  /* PÁGINAS */
+  .page { display: none; padding: 28px 32px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* CABECERA DE SECCIÓN */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .section-header h1 { font-size: 20px; font-weight: 600; }
+  .section-header p { font-size: 13px; color: #666; margin-top: 2px; }
+
+  /* BOTONES */
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 18px; border-radius: 8px; font-size: 14px;
+    cursor: pointer; border: none; font-weight: 500;
+  }
+  .btn-primary { background: #1a3a2a; color: white; }
+  .btn-primary:hover { background: #255038; }
+  .btn-secondary { background: white; color: #1a1a1a; border: 1px solid #ddd; }
+  .btn-secondary:hover { background: #f0f0f0; }
+  .btn-danger { background: #fee2e2; color: #991b1b; }
+  .btn-danger:hover { background: #fecaca; }
+  .btn-sm { padding: 5px 11px; font-size: 12px; }
+
+  /* FILTROS */
+  .filtros-bar {
+    background: white; border: 1px solid #e5e5e5; border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 16px;
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;
+  }
+  .filtro-grupo { display: flex; flex-direction: column; gap: 4px; }
+  .filtro-grupo label { font-size: 11px; color: #888; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .filtro-grupo select, .filtro-grupo input {
+    padding: 7px 10px; border: 1px solid #ddd; border-radius: 7px;
+    font-size: 13px; background: white; min-width: 140px;
+  }
+  .filtro-grupo select:focus, .filtro-grupo input:focus { outline: 2px solid #1a3a2a; border-color: transparent; }
+  .btn-reset { background: none; border: 1px solid #ddd; color: #888; padding: 7px 12px; border-radius: 7px; font-size: 13px; cursor: pointer; align-self: flex-end; }
+  .btn-reset:hover { background: #f5f5f0; }
+
+  /* LISTA DE EMPRESAS */
+  .empresa-lista { display: flex; flex-direction: column; gap: 8px; }
+  .empresa-row {
+    background: white; border: 1px solid #e5e5e5; border-radius: 10px;
+    padding: 14px 18px; display: flex; align-items: center; gap: 16px;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .empresa-row:hover { border-color: #1a3a2a; }
+  .empresa-row.sin-plazas { opacity: 0.6; }
+  .empresa-nombre { font-size: 15px; font-weight: 600; flex: 1; }
+  .empresa-municipio { font-size: 13px; color: #888; flex: 1; }
+  .empresa-tipo { font-size: 12px; background: #e8f5ee; color: #1a5c3a; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+  .plazas-badge {
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap;
+  }
+  .plazas-ok { background: #dcfce7; color: #166534; }
+  .plazas-poco { background: #fef9c3; color: #854d0e; }
+  .plazas-lleno { background: #fee2e2; color: #991b1b; }
+  .coche-badge { font-size: 11px; background: #eff6ff; color: #1e40af; padding: 3px 8px; border-radius: 20px; }
+  .empresa-acciones { display: flex; gap: 6px; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white; border-radius: 14px; padding: 28px;
+    width: 620px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+  .modal-header h2 { font-size: 18px; font-weight: 600; }
+  .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #888; line-height: 1; }
+  .modal-close:hover { color: #1a1a1a; }
+
+  /* FORMULARIO */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label { font-size: 12px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.4px; }
+  .form-group input, .form-group select, .form-group textarea {
+    padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px;
+    font-size: 14px; font-family: inherit;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: 2px solid #1a3a2a; border-color: transparent;
+  }
+  .form-group textarea { resize: vertical; min-height: 70px; }
+  .form-section-title {
+    grid-column: 1 / -1; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.8px; color: #1a3a2a;
+    border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; margin-top: 6px;
+  }
+  .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+
+  /* STATS */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: white; border: 1px solid #e5e5e5; border-radius: 10px; padding: 14px 16px; }
+  .stat-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .stat-val { font-size: 26px; font-weight: 700; color: #1a3a2a; }
+  .stat-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
+
+  /* PRÓXIMAMENTE */
+  .coming-soon {
+    background: white; border: 1px solid #e5e5e5; border-radius: 12px;
+    padding: 60px; text-align: center; color: #aaa;
+  }
+  .coming-soon .icon { font-size: 40px; margin-bottom: 12px; }
+  .coming-soon h3 { font-size: 18px; color: #666; margin-bottom: 6px; }
+
+  /* FICHA EMPRESA (vista detalle) */
+  .ficha-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .ficha-overlay.open { display: flex; }
+  .ficha {
+    background: white; border-radius: 14px; padding: 28px;
+    width: 680px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+  }
+  .ficha-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .ficha-campo { display: flex; flex-direction: column; gap: 3px; }
+  .ficha-campo.full { grid-column: 1 / -1; }
+  .ficha-campo span:first-child { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+  .ficha-campo span:last-child { font-size: 14px; color: #1a1a1a; }
+  .ficha-section { grid-column: 1 / -1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #1a3a2a; border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; margin-top: 8px; }
+  .barra-plazas { height: 8px; background: #f0f0f0; border-radius: 4px; margin-top: 6px; overflow: hidden; }
+  .barra-fill { height: 100%; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- BARRA DE NAVEGACIÓN -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">🌿</div>
+    Portal Profesores
+  </div>
+  <nav class="nav">
+    <button class="nav-btn" onclick="mostrarPagina('noticias')">📢 Noticias</button>
+    <button class="nav-btn" onclick="mostrarPagina('biblioteca')">📚 Biblioteca</button>
+    <button class="nav-btn active" onclick="mostrarPagina('practicas')">🎓 Prácticas</button>
+  </nav>
+  <div style="font-size:13px;color:rgba(255,255,255,0.6)">GASA · Portal docente</div>
+</div>
+
+<!-- PÁGINA: NOTICIAS -->
+<div class="page" id="page-noticias">
+  <div class="coming-soon">
+    <div class="icon">📢</div>
+    <h3>Tablón de anuncios</h3>
+    <p>Próximamente disponible</p>
+  </div>
+</div>
+
+<!-- PÁGINA: BIBLIOTECA -->
+<div class="page" id="page-biblioteca">
+  <div class="coming-soon">
+    <div class="icon">📚</div>
+    <h3>Biblioteca de materiales</h3>
+    <p>Próximamente disponible</p>
+  </div>
+</div>
+
+<!-- PÁGINA: PRÁCTICAS -->
+<div class="page active" id="page-practicas">
+
+  <!-- Sub-navegación -->
+  <div style="display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid #e5e5e5;padding-bottom:0;">
+    <button class="nav-btn active" id="tab-empresas-btn" onclick="mostrarTab('empresas')" style="color:#1a3a2a;border-bottom:2px solid #1a3a2a;border-radius:0;padding-bottom:12px;">Empresas</button>
+    <button class="nav-btn" id="tab-alumnado-btn" onclick="mostrarTab('alumnado')" style="border-radius:0;padding-bottom:12px;border-bottom:2px solid transparent;">Alumnado</button>
+    <button class="nav-btn" id="tab-calendario-btn" onclick="mostrarTab('calendario')" style="border-radius:0;padding-bottom:12px;border-bottom:2px solid transparent;">Calendario</button>
+  </div>
+
+  <!-- TAB: EMPRESAS -->
+  <div id="tab-empresas">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total empresas</div>
+        <div class="stat-val" id="stat-total">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Plazas libres</div>
+        <div class="stat-val" id="stat-libres" style="color:#166534;">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Plazas ocupadas</div>
+        <div class="stat-val" id="stat-ocupadas" style="color:#854d0e;">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Sin confirmar convenio</div>
+        <div class="stat-val" id="stat-sinconvenio" style="color:#991b1b;">0</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div>
+        <h1>Empresas de prácticas</h1>
+        <p id="contador-resultado">Mostrando todas las empresas</p>
+      </div>
+      <button class="btn btn-primary" onclick="abrirModalNueva()">+ Añadir empresa</button>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros-bar">
+      <div class="filtro-grupo">
+        <label>Buscar</label>
+        <input type="text" id="f-buscar" placeholder="Nombre o municipio..." oninput="filtrar()">
+      </div>
+      <div class="filtro-grupo">
+        <label>Especialidad</label>
+        <select id="f-especialidad" onchange="filtrar()">
+          <option value="">Todas</option>
+          <option>Clínica</option>
+          <option>V. Campo</option>
+          <option>Ex. vacuno</option>
+          <option>Ex. ovino</option>
+          <option>Ex. cerdo</option>
+          <option>Ex. avícola</option>
+          <option>Ex. caballo</option>
+          <option>Ex. Patos</option>
+          <option>ovino+caballo</option>
+          <option>ovino+vacuno</option>
+          <option>ovino+caprino</option>
+          <option>caballo+bravo</option>
+          <option>Bravo</option>
+          <option>Granja Escuela</option>
+          <option>Sindicato</option>
+          <option>Asociación ganado</option>
+          <option>Adiestramiento perros</option>
+          <option>Hípica</option>
+          <option>Quesería</option>
+          <option>OTROS</option>
+        </select>
+      </div>
+      <div class="filtro-grupo">
+        <label>Plazas</label>
+        <select id="f-plazas" onchange="filtrar()">
+          <option value="">Todas</option>
+          <option value="libres">Con plazas libres</option>
+          <option value="lleno">Completas</option>
+        </select>
+      </div>
+      <div class="filtro-grupo">
+        <label>Coche</label>
+        <select id="f-coche" onchange="filtrar()">
+          <option value="">Todos</option>
+          <option value="si">Necesita coche</option>
+          <option value="no">Sin coche</option>
+        </select>
+      </div>
+      <div class="filtro-grupo">
+        <label>Convenio</label>
+        <select id="f-convenio" onchange="filtrar()">
+          <option value="">Todos</option>
+          <option value="firmado">Firmado</option>
+          <option value="pendiente">Pendiente</option>
+        </select>
+      </div>
+      <button class="btn-reset" onclick="resetFiltros()">✕ Limpiar</button>
+    </div>
+
+    <!-- LISTA -->
+    <div class="empresa-lista" id="lista-empresas"></div>
+  </div>
+
+  <!-- TAB: ALUMNADO -->
+  <div id="tab-alumnado" style="display:none;">
+    <div class="coming-soon">
+      <div class="icon">🎓</div>
+      <h3>Alumnado</h3>
+      <p>Próximamente disponible</p>
+    </div>
+  </div>
+
+  <!-- TAB: CALENDARIO -->
+  <div id="tab-calendario" style="display:none;">
+    <div class="coming-soon">
+      <div class="icon">📅</div>
+      <h3>Calendario de prácticas</h3>
+      <p>Próximamente disponible</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: AÑADIR / EDITAR EMPRESA -->
+<div class="modal-overlay" id="modal-empresa">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-titulo">Nueva empresa</h2>
+      <button class="modal-close" onclick="cerrarModal()">×</button>
+    </div>
+    <form id="form-empresa" onsubmit="guardarEmpresa(event)">
+      <div class="form-grid">
+        <div class="form-section-title">Datos generales</div>
+        <div class="form-group full">
+          <label>Nombre de la empresa *</label>
+          <input type="text" id="f-nombre" required placeholder="Nombre completo">
+        </div>
+        <div class="form-group">
+          <label>Tipo / Especialidad *</label>
+          <select id="f-tipo" required>
+            <option value="">Selecciona...</option>
+            <option>Clínica</option>
+            <option>V. Campo</option>
+            <option>Ex. vacuno</option>
+            <option>Ex. ovino</option>
+            <option>Ex. cerdo</option>
+            <option>Ex. avícola</option>
+            <option>Ex. caballo</option>
+            <option>Ex. Patos</option>
+            <option>ovino+caballo</option>
+            <option>ovino+vacuno</option>
+            <option>ovino+caprino</option>
+            <option>caballo+bravo</option>
+            <option>Bravo</option>
+            <option>Granja Escuela</option>
+            <option>Sindicato</option>
+            <option>Asociación ganado</option>
+            <option>Adiestramiento perros</option>
+            <option>Hípica</option>
+            <option>Quesería</option>
+            <option>OTROS</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Municipio</label>
+          <input type="text" id="f-municipio" placeholder="Municipio">
+        </div>
+        <div class="form-group full">
+          <label>Dirección</label>
+          <input type="text" id="f-direccion" placeholder="Calle, número...">
+        </div>
+
+        <div class="form-section-title">Contacto</div>
+        <div class="form-group">
+          <label>Persona de contacto</label>
+          <input type="text" id="f-contacto" placeholder="Nombre y apellido">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="tel" id="f-telefono" placeholder="600 000 000">
+        </div>
+        <div class="form-group full">
+          <label>Correo electrónico</label>
+          <input type="email" id="f-email" placeholder="contacto@empresa.com">
+        </div>
+
+        <div class="form-section-title">Prácticas</div>
+        <div class="form-group">
+          <label>Acepta alumnos</label>
+          <select id="f-acepta">
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Número de plazas</label>
+          <input type="number" id="f-plazas-num" min="0" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Período</label>
+          <input type="text" id="f-periodo" placeholder="Ej: Febrero–Mayo">
+        </div>
+        <div class="form-group">
+          <label>Se necesita coche</label>
+          <select id="f-coche-req">
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+
+        <div class="form-section-title">Convenio</div>
+        <div class="form-group">
+          <label>Estado del convenio</label>
+          <select id="f-convenio-est">
+            <option value="pendiente">Pendiente</option>
+            <option value="firmado">Firmado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de convenio</label>
+          <input type="date" id="f-convenio-fecha">
+        </div>
+
+        <div class="form-section-title">Seguimiento</div>
+        <div class="form-group">
+          <label>Profesor/a último contacto</label>
+          <input type="text" id="f-profe" placeholder="Nombre del profesor/a">
+        </div>
+        <div class="form-group">
+          <label>Fecha último contacto</label>
+          <input type="date" id="f-fecha-contacto">
+        </div>
+        <div class="form-group full">
+          <label>Observaciones</label>
+          <textarea id="f-observaciones" placeholder="Notas adicionales..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar empresa</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- FICHA: DETALLE EMPRESA -->
+<div class="ficha-overlay" id="ficha-empresa">
+  <div class="ficha">
+    <div class="modal-header">
+      <h2 id="ficha-nombre-titulo">—</h2>
+      <button class="modal-close" onclick="cerrarFicha()">×</button>
+    </div>
+    <div class="ficha-grid" id="ficha-contenido"></div>
+    <div class="form-actions" style="margin-top:20px;">
+      <button class="btn btn-danger btn-sm" onclick="eliminarEmpresa()">Eliminar</button>
+      <button class="btn btn-secondary" onclick="cerrarFicha()">Cerrar</button>
+      <button class="btn btn-primary" onclick="editarEmpresaActual()">✏️ Editar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATOS ──────────────────────────────────────────────
+let empresas = JSON.parse(localStorage.getItem('empresas') || '[]');
+let empresaEditandoIdx = null;
+let empresaViendoIdx = null;
+
+// ── NAVEGACIÓN ─────────────────────────────────────────
+function mostrarPagina(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+function mostrarTab(tab) {
+  ['empresas','alumnado','calendario'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    const btn = document.getElementById('tab-' + t + '-btn');
+    if (t === tab) {
+      btn.style.color = '#1a3a2a';
+      btn.style.borderBottom = '2px solid #1a3a2a';
+    } else {
+      btn.style.color = '';
+      btn.style.borderBottom = '2px solid transparent';
+    }
+  });
+}
+
+// ── RENDER LISTA ───────────────────────────────────────
+function renderLista(lista) {
+  const cont = document.getElementById('lista-empresas');
+  if (lista.length === 0) {
+    cont.innerHTML = '<div class="coming-soon" style="padding:40px;"><div class="icon">🔍</div><h3>Sin resultados</h3><p>Prueba con otros filtros</p></div>';
+    return;
+  }
+  cont.innerHTML = lista.map(([idx, e]) => {
+    const plazas = parseInt(e.plazas) || 0;
+    const ocupadas = parseInt(e.ocupadas) || 0;
+    const libres = plazas - ocupadas;
+    let badgeClass = 'plazas-ok', badgeText = libres + ' libres';
+    if (libres === 0 && plazas > 0) { badgeClass = 'plazas-lleno'; badgeText = 'Completa'; }
+    else if (libres <= 1 && plazas > 0) { badgeClass = 'plazas-poco'; }
+    return `<div class="empresa-row${libres===0&&plazas>0?' sin-plazas':''}" onclick="verFicha(${idx})">
+      <div>
+        <div class="empresa-nombre">${e.nombre}</div>
+        <div style="font-size:12px;color:#999;margin-top:2px;">${e.municipio || '—'}</div>
+      </div>
+      <div class="empresa-tipo">${e.tipo || '—'}</div>
+      ${e.coche === 'si' ? '<span class="coche-badge">🚗 Coche</span>' : ''}
+      <div class="plazas-badge ${badgeClass}">${badgeText}</div>
+      <div style="font-size:11px;color:${e.convenio==='firmado'?'#166534':'#991b1b'};">
+        ${e.convenio === 'firmado' ? '✔ Convenio' : '⚠ Pendiente'}
+      </div>
+      <div class="empresa-acciones">
+        <button class="btn btn-secondary btn-sm" onclick="event.stopPropagation();abrirModalEditar(${idx})">✏️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function actualizarStats(lista) {
+  const todas = empresas;
+  const plazasTotal = todas.reduce((s,e) => s + (parseInt(e.plazas)||0), 0);
+  const ocupadasTotal = todas.reduce((s,e) => s + (parseInt(e.ocupadas)||0), 0);
+  document.getElementById('stat-total').textContent = todas.length;
+  document.getElementById('stat-libres').textContent = plazasTotal - ocupadasTotal;
+  document.getElementById('stat-ocupadas').textContent = ocupadasTotal;
+  document.getElementById('stat-sinconvenio').textContent = todas.filter(e => e.convenio !== 'firmado').length;
+}
+
+// ── FILTROS ────────────────────────────────────────────
+function filtrar() {
+  const buscar = document.getElementById('f-buscar').value.toLowerCase();
+  const esp = document.getElementById('f-especialidad').value;
+  const plazas = document.getElementById('f-plazas').value;
+  const coche = document.getElementById('f-coche').value;
+  const convenio = document.getElementById('f-convenio').value;
+
+  const resultado = empresas.map((e, i) => [i, e]).filter(([i, e]) => {
+    const matchBuscar = !buscar || e.nombre?.toLowerCase().includes(buscar) || e.municipio?.toLowerCase().includes(buscar);
+    const matchEsp = !esp || e.tipo === esp;
+    const libres = (parseInt(e.plazas)||0) - (parseInt(e.ocupadas)||0);
+    const matchPlazas = !plazas || (plazas === 'libres' ? libres > 0 : libres === 0);
+    const matchCoche = !coche || e.coche === coche;
+    const matchConvenio = !convenio || e.convenio === convenio;
+    return matchBuscar && matchEsp && matchPlazas && matchCoche && matchConvenio;
+  });
+
+  document.getElementById('contador-resultado').textContent =
+    resultado.length === empresas.length
+      ? `Mostrando las ${empresas.length} empresas`
+      : `Mostrando ${resultado.length} de ${empresas.length} empresas`;
+
+  renderLista(resultado);
+}
+
+function resetFiltros() {
+  ['f-buscar','f-especialidad','f-plazas','f-coche','f-convenio'].forEach(id => {
+    const el = document.getElementById(id);
+    el.value = '';
+  });
+  filtrar();
+}
+
+// ── MODAL AÑADIR / EDITAR ──────────────────────────────
+function abrirModalNueva() {
+  empresaEditandoIdx = null;
+  document.getElementById('modal-titulo').textContent = 'Nueva empresa';
+  document.getElementById('form-empresa').reset();
+  document.getElementById('modal-empresa').classList.add('open');
+}
+
+function abrirModalEditar(idx) {
+  empresaEditandoIdx = idx;
+  const e = empresas[idx];
+  document.getElementById('modal-titulo').textContent = 'Editar empresa';
+  document.getElementById('f-nombre').value = e.nombre || '';
+  document.getElementById('f-tipo').value = e.tipo || '';
+  document.getElementById('f-municipio').value = e.municipio || '';
+  document.getElementById('f-direccion').value = e.direccion || '';
+  document.getElementById('f-contacto').value = e.contacto || '';
+  document.getElementById('f-telefono').value = e.telefono || '';
+  document.getElementById('f-email').value = e.email || '';
+  document.getElementById('f-acepta').value = e.acepta || 'si';
+  document.getElementById('f-plazas-num').value = e.plazas || '';
+  document.getElementById('f-periodo').value = e.periodo || '';
+  document.getElementById('f-coche-req').value = e.coche || 'no';
+  document.getElementById('f-convenio-est').value = e.convenio || 'pendiente';
+  document.getElementById('f-convenio-fecha').value = e.convenioFecha || '';
+  document.getElementById('f-profe').value = e.profe || '';
+  document.getElementById('f-fecha-contacto').value = e.fechaContacto || '';
+  document.getElementById('f-observaciones').value = e.observaciones || '';
+  document.getElementById('modal-empresa').classList.add('open');
+}
+
+function cerrarModal() {
+  document.getElementById('modal-empresa').classList.remove('open');
+}
+
+function guardarEmpresa(event) {
+  event.preventDefault();
+  const empresa = {
+    nombre: document.getElementById('f-nombre').value,
+    tipo: document.getElementById('f-tipo').value,
+    municipio: document.getElementById('f-municipio').value,
+    direccion: document.getElementById('f-direccion').value,
+    contacto: document.getElementById('f-contacto').value,
+    telefono: document.getElementById('f-telefono').value,
+    email: document.getElementById('f-email').value,
+    acepta: document.getElementById('f-acepta').value,
+    plazas: document.getElementById('f-plazas-num').value,
+    ocupadas: empresaEditandoIdx !== null ? (empresas[empresaEditandoIdx].ocupadas || 0) : 0,
+    periodo: document.getElementById('f-periodo').value,
+    coche: document.getElementById('f-coche-req').value,
+    convenio: document.getElementById('f-convenio-est').value,
+    convenioFecha: document.getElementById('f-convenio-fecha').value,
+    profe: document.getElementById('f-profe').value,
+    fechaContacto: document.getElementById('f-fecha-contacto').value,
+    observaciones: document.getElementById('f-observaciones').value,
+  };
+  if (empresaEditandoIdx !== null) {
+    empresas[empresaEditandoIdx] = empresa;
+  } else {
+    empresas.push(empresa);
+  }
+  guardarLocal();
+  cerrarModal();
+  filtrar();
+  actualizarStats();
+}
+
+// ── FICHA DETALLE ──────────────────────────────────────
+function verFicha(idx) {
+  empresaViendoIdx = idx;
+  const e = empresas[idx];
+  document.getElementById('ficha-nombre-titulo').textContent = e.nombre;
+  const plazas = parseInt(e.plazas) || 0;
+  const ocupadas = parseInt(e.ocupadas) || 0;
+  const libres = plazas - ocupadas;
+  const pct = plazas > 0 ? Math.round((ocupadas/plazas)*100) : 0;
+  const color = libres === 0 ? '#ef4444' : libres <= 1 ? '#f59e0b' : '#22c55e';
+
+  document.getElementById('ficha-contenido').innerHTML = `
+    <div class="ficha-section">Datos generales</div>
+    <div class="ficha-campo"><span>Tipo</span><span>${e.tipo||'—'}</span></div>
+    <div class="ficha-campo"><span>Municipio</span><span>${e.municipio||'—'}</span></div>
+    <div class="ficha-campo full"><span>Dirección</span><span>${e.direccion||'—'}</span></div>
+    <div class="ficha-section">Contacto</div>
+    <div class="ficha-campo"><span>Persona de contacto</span><span>${e.contacto||'—'}</span></div>
+    <div class="ficha-campo"><span>Teléfono</span><span>${e.telefono||'—'}</span></div>
+    <div class="ficha-campo full"><span>Correo</span><span>${e.email||'—'}</span></div>
+    <div class="ficha-section">Prácticas</div>
+    <div class="ficha-campo"><span>Acepta alumnos</span><span>${e.acepta==='si'?'✔ Sí':'✗ No'}</span></div>
+    <div class="ficha-campo"><span>Período</span><span>${e.periodo||'—'}</span></div>
+    <div class="ficha-campo"><span>Coche necesario</span><span>${e.coche==='si'?'🚗 Sí':'No'}</span></div>
+    <div class="ficha-campo full">
+      <span>Plazas: ${ocupadas} ocupadas / ${plazas} totales (${libres} libres)</span>
+      <div class="barra-plazas"><div class="barra-fill" style="width:${pct}%;background:${color};"></div></div>
+    </div>
+    <div class="ficha-section">Convenio</div>
+    <div class="ficha-campo"><span>Estado</span><span style="color:${e.convenio==='firmado'?'#166534':'#991b1b'}">${e.convenio==='firmado'?'✔ Firmado':'⚠ Pendiente'}</span></div>
+    <div class="ficha-campo"><span>Fecha convenio</span><span>${e.convenioFecha||'—'}</span></div>
+    <div class="ficha-section">Seguimiento</div>
+    <div class="ficha-campo"><span>Último contacto por</span><span>${e.profe||'—'}</span></div>
+    <div class="ficha-campo"><span>Fecha último contacto</span><span>${e.fechaContacto||'—'}</span></div>
+    <div class="ficha-campo full"><span>Observaciones</span><span>${e.observaciones||'—'}</span></div>
+  `;
+  document.getElementById('ficha-empresa').classList.add('open');
+}
+
+function cerrarFicha() {
+  document.getElementById('ficha-empresa').classList.remove('open');
+}
+
+function editarEmpresaActual() {
+  cerrarFicha();
+  abrirModalEditar(empresaViendoIdx);
+}
+
+function eliminarEmpresa() {
+  if (!confirm('¿Seguro que quieres eliminar esta empresa?')) return;
+  empresas.splice(empresaViendoIdx, 1);
+  guardarLocal();
+  cerrarFicha();
+  filtrar();
+  actualizarStats();
+}
+
+// ── PERSISTENCIA ───────────────────────────────────────
+function guardarLocal() {
+  localStorage.setItem('empresas', JSON.stringify(empresas));
+}
+
+// ── INICIO ─────────────────────────────────────────────
+filtrar();
+actualizarStats();
+</script>
+</body>
+</html>
