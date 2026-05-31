@@ -7,8 +7,6 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: system-ui, sans-serif; background: #f5f5f0; color: #1a1a1a; }
-
-  /* TOPBAR */
   .topbar {
     background: #1a3a2a; color: white;
     padding: 0 24px; height: 54px;
@@ -18,135 +16,65 @@
   .logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; }
   .logo-icon { width: 30px; height: 30px; background: #4caf82; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
   .nav { display: flex; gap: 4px; }
-  .nav-btn {
-    background: transparent; border: none; color: rgba(255,255,255,0.7);
-    padding: 7px 14px; border-radius: 7px; font-size: 14px; cursor: pointer;
-  }
+  .nav-btn { background: transparent; border: none; color: rgba(255,255,255,0.7); padding: 7px 14px; border-radius: 7px; font-size: 14px; cursor: pointer; }
   .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
   .nav-btn.active { background: rgba(255,255,255,0.18); color: white; font-weight: 500; }
-
-  /* PÁGINAS */
   .page { display: none; padding: 28px 32px; max-width: 1100px; margin: 0 auto; }
   .page.active { display: block; }
-
-  /* CABECERA DE SECCIÓN */
   .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
   .section-header h1 { font-size: 20px; font-weight: 600; }
   .section-header p { font-size: 13px; color: #666; margin-top: 2px; }
-
-  /* BOTONES */
-  .btn {
-    display: inline-flex; align-items: center; gap: 7px;
-    padding: 9px 18px; border-radius: 8px; font-size: 14px;
-    cursor: pointer; border: none; font-weight: 500;
-  }
+  .btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 8px; font-size: 14px; cursor: pointer; border: none; font-weight: 500; }
   .btn-primary { background: #1a3a2a; color: white; }
   .btn-primary:hover { background: #255038; }
   .btn-secondary { background: white; color: #1a1a1a; border: 1px solid #ddd; }
   .btn-secondary:hover { background: #f0f0f0; }
   .btn-danger { background: #fee2e2; color: #991b1b; }
-  .btn-danger:hover { background: #fecaca; }
   .btn-sm { padding: 5px 11px; font-size: 12px; }
-
-  /* FILTROS */
-  .filtros-bar {
-    background: white; border: 1px solid #e5e5e5; border-radius: 10px;
-    padding: 14px 16px; margin-bottom: 16px;
-    display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;
-  }
+  .filtros-bar { background: white; border: 1px solid #e5e5e5; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
   .filtro-grupo { display: flex; flex-direction: column; gap: 4px; }
   .filtro-grupo label { font-size: 11px; color: #888; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-  .filtro-grupo select, .filtro-grupo input {
-    padding: 7px 10px; border: 1px solid #ddd; border-radius: 7px;
-    font-size: 13px; background: white; min-width: 140px;
-  }
+  .filtro-grupo select, .filtro-grupo input { padding: 7px 10px; border: 1px solid #ddd; border-radius: 7px; font-size: 13px; background: white; min-width: 140px; }
   .filtro-grupo select:focus, .filtro-grupo input:focus { outline: 2px solid #1a3a2a; border-color: transparent; }
   .btn-reset { background: none; border: 1px solid #ddd; color: #888; padding: 7px 12px; border-radius: 7px; font-size: 13px; cursor: pointer; align-self: flex-end; }
-  .btn-reset:hover { background: #f5f5f0; }
-
-  /* LISTA DE EMPRESAS */
   .empresa-lista { display: flex; flex-direction: column; gap: 8px; }
-  .empresa-row {
-    background: white; border: 1px solid #e5e5e5; border-radius: 10px;
-    padding: 14px 18px; display: flex; align-items: center; gap: 16px;
-    cursor: pointer; transition: border-color 0.15s;
-  }
+  .empresa-row { background: white; border: 1px solid #e5e5e5; border-radius: 10px; padding: 14px 18px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: border-color 0.15s; }
   .empresa-row:hover { border-color: #1a3a2a; }
-  .empresa-row.sin-plazas { opacity: 0.6; }
   .empresa-nombre { font-size: 15px; font-weight: 600; flex: 1; }
   .empresa-municipio { font-size: 13px; color: #888; flex: 1; }
   .empresa-tipo { font-size: 12px; background: #e8f5ee; color: #1a5c3a; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
-  .plazas-badge {
-    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap;
-  }
+  .plazas-badge { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
   .plazas-ok { background: #dcfce7; color: #166534; }
   .plazas-poco { background: #fef9c3; color: #854d0e; }
   .plazas-lleno { background: #fee2e2; color: #991b1b; }
   .coche-badge { font-size: 11px; background: #eff6ff; color: #1e40af; padding: 3px 8px; border-radius: 20px; }
   .empresa-acciones { display: flex; gap: 6px; }
-
-  /* MODAL */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.45); z-index: 200;
-    align-items: center; justify-content: center;
-  }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
   .modal-overlay.open { display: flex; }
-  .modal {
-    background: white; border-radius: 14px; padding: 28px;
-    width: 620px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
-  }
+  .modal { background: white; border-radius: 14px; padding: 28px; width: 620px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
   .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
   .modal-header h2 { font-size: 18px; font-weight: 600; }
-  .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #888; line-height: 1; }
-  .modal-close:hover { color: #1a1a1a; }
-
-  /* FORMULARIO */
+  .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #888; }
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form-group { display: flex; flex-direction: column; gap: 5px; }
   .form-group.full { grid-column: 1 / -1; }
   .form-group label { font-size: 12px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.4px; }
-  .form-group input, .form-group select, .form-group textarea {
-    padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px;
-    font-size: 14px; font-family: inherit;
-  }
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-    outline: 2px solid #1a3a2a; border-color: transparent;
-  }
+  .form-group input, .form-group select, .form-group textarea { padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; font-family: inherit; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: 2px solid #1a3a2a; border-color: transparent; }
   .form-group textarea { resize: vertical; min-height: 70px; }
-  .form-section-title {
-    grid-column: 1 / -1; font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.8px; color: #1a3a2a;
-    border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; margin-top: 6px;
-  }
+  .form-section-title { grid-column: 1 / -1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #1a3a2a; border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; margin-top: 6px; }
   .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
-
-  /* STATS */
   .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
   .stat-card { background: white; border: 1px solid #e5e5e5; border-radius: 10px; padding: 14px 16px; }
   .stat-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
   .stat-val { font-size: 26px; font-weight: 700; color: #1a3a2a; }
   .stat-sub { font-size: 11px; color: #aaa; margin-top: 2px; }
-
-  /* PRÓXIMAMENTE */
-  .coming-soon {
-    background: white; border: 1px solid #e5e5e5; border-radius: 12px;
-    padding: 60px; text-align: center; color: #aaa;
-  }
+  .coming-soon { background: white; border: 1px solid #e5e5e5; border-radius: 12px; padding: 60px; text-align: center; color: #aaa; }
   .coming-soon .icon { font-size: 40px; margin-bottom: 12px; }
   .coming-soon h3 { font-size: 18px; color: #666; margin-bottom: 6px; }
-
-  /* FICHA EMPRESA (vista detalle) */
-  .ficha-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.45); z-index: 200;
-    align-items: center; justify-content: center;
-  }
+  .ficha-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
   .ficha-overlay.open { display: flex; }
-  .ficha {
-    background: white; border-radius: 14px; padding: 28px;
-    width: 680px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
-  }
+  .ficha { background: white; border-radius: 14px; padding: 28px; width: 680px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
   .ficha-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
   .ficha-campo { display: flex; flex-direction: column; gap: 3px; }
   .ficha-campo.full { grid-column: 1 / -1; }
@@ -155,111 +83,70 @@
   .ficha-section { grid-column: 1 / -1; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #1a3a2a; border-bottom: 1px solid #e5e5e5; padding-bottom: 6px; margin-top: 8px; }
   .barra-plazas { height: 8px; background: #f0f0f0; border-radius: 4px; margin-top: 6px; overflow: hidden; }
   .barra-fill { height: 100%; border-radius: 4px; }
+  .toast { position: fixed; bottom: 24px; right: 24px; background: #1a3a2a; color: white; padding: 12px 20px; border-radius: 10px; font-size: 14px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .loading { text-align: center; padding: 40px; color: #888; font-size: 14px; }
+  .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid #ddd; border-top-color: #1a3a2a; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<!-- BARRA DE NAVEGACIÓN -->
 <div class="topbar">
   <div class="logo">
     <div class="logo-icon">🌿</div>
     Portal Profesores
   </div>
   <nav class="nav">
-    <button class="nav-btn" onclick="mostrarPagina('noticias')">📢 Noticias</button>
-    <button class="nav-btn" onclick="mostrarPagina('biblioteca')">📚 Biblioteca</button>
-    <button class="nav-btn active" onclick="mostrarPagina('practicas')">🎓 Prácticas</button>
+    <button class="nav-btn" onclick="mostrarPagina('noticias', this)">📢 Noticias</button>
+    <button class="nav-btn active" onclick="mostrarPagina('practicas', this)">🎓 Prácticas</button>
+    <button class="nav-btn" onclick="mostrarPagina('biblioteca', this)">📚 Biblioteca</button>
   </nav>
   <div style="font-size:13px;color:rgba(255,255,255,0.6)">GASA · Portal docente</div>
 </div>
 
-<!-- PÁGINA: NOTICIAS -->
 <div class="page" id="page-noticias">
-  <div class="coming-soon">
-    <div class="icon">📢</div>
-    <h3>Tablón de anuncios</h3>
-    <p>Próximamente disponible</p>
-  </div>
+  <div class="coming-soon"><div class="icon">📢</div><h3>Tablón de anuncios</h3><p>Próximamente disponible</p></div>
 </div>
 
-<!-- PÁGINA: BIBLIOTECA -->
 <div class="page" id="page-biblioteca">
-  <div class="coming-soon">
-    <div class="icon">📚</div>
-    <h3>Biblioteca de materiales</h3>
-    <p>Próximamente disponible</p>
-  </div>
+  <div class="coming-soon"><div class="icon">📚</div><h3>Biblioteca de materiales</h3><p>Próximamente disponible</p></div>
 </div>
 
-<!-- PÁGINA: PRÁCTICAS -->
 <div class="page active" id="page-practicas">
-
-  <!-- Sub-navegación -->
-  <div style="display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid #e5e5e5;padding-bottom:0;">
+  <div style="display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid #e5e5e5;">
     <button class="nav-btn active" id="tab-empresas-btn" onclick="mostrarTab('empresas')" style="color:#1a3a2a;border-bottom:2px solid #1a3a2a;border-radius:0;padding-bottom:12px;">Empresas</button>
     <button class="nav-btn" id="tab-alumnado-btn" onclick="mostrarTab('alumnado')" style="border-radius:0;padding-bottom:12px;border-bottom:2px solid transparent;">Alumnado</button>
     <button class="nav-btn" id="tab-calendario-btn" onclick="mostrarTab('calendario')" style="border-radius:0;padding-bottom:12px;border-bottom:2px solid transparent;">Calendario</button>
   </div>
 
-  <!-- TAB: EMPRESAS -->
   <div id="tab-empresas">
     <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-label">Total empresas</div>
-        <div class="stat-val" id="stat-total">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Plazas libres</div>
-        <div class="stat-val" id="stat-libres" style="color:#166534;">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Plazas ocupadas</div>
-        <div class="stat-val" id="stat-ocupadas" style="color:#854d0e;">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Sin confirmar convenio</div>
-        <div class="stat-val" id="stat-sinconvenio" style="color:#991b1b;">0</div>
-      </div>
+      <div class="stat-card"><div class="stat-label">Total empresas</div><div class="stat-val" id="stat-total">—</div></div>
+      <div class="stat-card"><div class="stat-label">Plazas libres</div><div class="stat-val" id="stat-libres" style="color:#166534;">—</div></div>
+      <div class="stat-card"><div class="stat-label">Plazas ocupadas</div><div class="stat-val" id="stat-ocupadas" style="color:#854d0e;">—</div></div>
+      <div class="stat-card"><div class="stat-label">Sin convenio</div><div class="stat-val" id="stat-sinconvenio" style="color:#991b1b;">—</div></div>
     </div>
-
     <div class="section-header">
-      <div>
-        <h1>Empresas de prácticas</h1>
-        <p id="contador-resultado">Mostrando todas las empresas</p>
-      </div>
+      <div><h1>Empresas de prácticas</h1><p id="contador-resultado">Cargando...</p></div>
       <button class="btn btn-primary" onclick="abrirModalNueva()">+ Añadir empresa</button>
     </div>
-
-    <!-- FILTROS -->
     <div class="filtros-bar">
       <div class="filtro-grupo">
         <label>Buscar</label>
         <input type="text" id="f-buscar" placeholder="Nombre o municipio..." oninput="filtrar()">
       </div>
       <div class="filtro-grupo">
-        <label>Especialidad</label>
+        <label>Tipo</label>
         <select id="f-especialidad" onchange="filtrar()">
-          <option value="">Todas</option>
-          <option>Clínica</option>
-          <option>V. Campo</option>
-          <option>Ex. vacuno</option>
-          <option>Ex. ovino</option>
-          <option>Ex. cerdo</option>
-          <option>Ex. avícola</option>
-          <option>Ex. caballo</option>
-          <option>Ex. Patos</option>
-          <option>ovino+caballo</option>
-          <option>ovino+vacuno</option>
-          <option>ovino+caprino</option>
-          <option>caballo+bravo</option>
-          <option>Bravo</option>
-          <option>Granja Escuela</option>
-          <option>Sindicato</option>
-          <option>Asociación ganado</option>
-          <option>Adiestramiento perros</option>
-          <option>Hípica</option>
-          <option>Quesería</option>
-          <option>OTROS</option>
+          <option value="">Todos</option>
+          <option>Clínica</option><option>V. Campo</option><option>Ex. vacuno</option>
+          <option>Ex. ovino</option><option>Ex. cerdo</option><option>Ex. avícola</option>
+          <option>Ex. caballo</option><option>Ex. Patos</option><option>ovino+caballo</option>
+          <option>ovino+vacuno</option><option>ovino+caprino</option><option>caballo+bravo</option>
+          <option>Bravo</option><option>Granja Escuela</option><option>Sindicato</option>
+          <option>Asociación ganado</option><option>Adiestramiento perros</option>
+          <option>Hípica</option><option>Quesería</option><option>OTROS</option>
         </select>
       </div>
       <div class="filtro-grupo">
@@ -288,31 +175,20 @@
       </div>
       <button class="btn-reset" onclick="resetFiltros()">✕ Limpiar</button>
     </div>
-
-    <!-- LISTA -->
-    <div class="empresa-lista" id="lista-empresas"></div>
+    <div class="empresa-lista" id="lista-empresas">
+      <div class="loading"><span class="spinner"></span>Cargando empresas...</div>
+    </div>
   </div>
 
-  <!-- TAB: ALUMNADO -->
   <div id="tab-alumnado" style="display:none;">
-    <div class="coming-soon">
-      <div class="icon">🎓</div>
-      <h3>Alumnado</h3>
-      <p>Próximamente disponible</p>
-    </div>
+    <div class="coming-soon"><div class="icon">🎓</div><h3>Alumnado</h3><p>Próximamente disponible</p></div>
   </div>
-
-  <!-- TAB: CALENDARIO -->
   <div id="tab-calendario" style="display:none;">
-    <div class="coming-soon">
-      <div class="icon">📅</div>
-      <h3>Calendario de prácticas</h3>
-      <p>Próximamente disponible</p>
-    </div>
+    <div class="coming-soon"><div class="icon">📅</div><h3>Calendario de prácticas</h3><p>Próximamente disponible</p></div>
   </div>
 </div>
 
-<!-- MODAL: AÑADIR / EDITAR EMPRESA -->
+<!-- MODAL EMPRESA -->
 <div class="modal-overlay" id="modal-empresa">
   <div class="modal">
     <div class="modal-header">
@@ -322,119 +198,48 @@
     <form id="form-empresa" onsubmit="guardarEmpresa(event)">
       <div class="form-grid">
         <div class="form-section-title">Datos generales</div>
-        <div class="form-group full">
-          <label>Nombre de la empresa *</label>
-          <input type="text" id="f-nombre" required placeholder="Nombre completo">
-        </div>
+        <div class="form-group full"><label>Nombre de la empresa *</label><input type="text" id="f-nombre" required placeholder="Nombre completo"></div>
         <div class="form-group">
           <label>Tipo / Especialidad *</label>
           <select id="f-tipo" required>
             <option value="">Selecciona...</option>
-            <option>Clínica</option>
-            <option>V. Campo</option>
-            <option>Ex. vacuno</option>
-            <option>Ex. ovino</option>
-            <option>Ex. cerdo</option>
-            <option>Ex. avícola</option>
-            <option>Ex. caballo</option>
-            <option>Ex. Patos</option>
-            <option>ovino+caballo</option>
-            <option>ovino+vacuno</option>
-            <option>ovino+caprino</option>
-            <option>caballo+bravo</option>
-            <option>Bravo</option>
-            <option>Granja Escuela</option>
-            <option>Sindicato</option>
-            <option>Asociación ganado</option>
-            <option>Adiestramiento perros</option>
-            <option>Hípica</option>
-            <option>Quesería</option>
-            <option>OTROS</option>
+            <option>Clínica</option><option>V. Campo</option><option>Ex. vacuno</option>
+            <option>Ex. ovino</option><option>Ex. cerdo</option><option>Ex. avícola</option>
+            <option>Ex. caballo</option><option>Ex. Patos</option><option>ovino+caballo</option>
+            <option>ovino+vacuno</option><option>ovino+caprino</option><option>caballo+bravo</option>
+            <option>Bravo</option><option>Granja Escuela</option><option>Sindicato</option>
+            <option>Asociación ganado</option><option>Adiestramiento perros</option>
+            <option>Hípica</option><option>Quesería</option><option>OTROS</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Municipio</label>
-          <input type="text" id="f-municipio" placeholder="Municipio">
-        </div>
-        <div class="form-group full">
-          <label>Dirección</label>
-          <input type="text" id="f-direccion" placeholder="Calle, número...">
-        </div>
-
+        <div class="form-group"><label>Municipio</label><input type="text" id="f-municipio" placeholder="Municipio"></div>
+        <div class="form-group full"><label>Dirección</label><input type="text" id="f-direccion" placeholder="Calle, número..."></div>
         <div class="form-section-title">Contacto</div>
-        <div class="form-group">
-          <label>Persona de contacto</label>
-          <input type="text" id="f-contacto" placeholder="Nombre y apellido">
-        </div>
-        <div class="form-group">
-          <label>Teléfono</label>
-          <input type="tel" id="f-telefono" placeholder="600 000 000">
-        </div>
-        <div class="form-group full">
-          <label>Correo electrónico</label>
-          <input type="email" id="f-email" placeholder="contacto@empresa.com">
-        </div>
-
+        <div class="form-group"><label>Persona de contacto</label><input type="text" id="f-contacto" placeholder="Nombre y apellido"></div>
+        <div class="form-group"><label>Teléfono</label><input type="tel" id="f-telefono" placeholder="600 000 000"></div>
+        <div class="form-group full"><label>Correo electrónico</label><input type="email" id="f-email" placeholder="contacto@empresa.com"></div>
         <div class="form-section-title">Prácticas</div>
-        <div class="form-group">
-          <label>Acepta alumnos</label>
-          <select id="f-acepta">
-            <option value="si">Sí</option>
-            <option value="no">No</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Número de plazas</label>
-          <input type="number" id="f-plazas-num" min="0" placeholder="0">
-        </div>
-        <div class="form-group">
-          <label>Período</label>
-          <input type="text" id="f-periodo" placeholder="Ej: Febrero–Mayo">
-        </div>
-        <div class="form-group">
-          <label>Se necesita coche</label>
-          <select id="f-coche-req">
-            <option value="si">Sí</option>
-            <option value="no">No</option>
-          </select>
-        </div>
-
+        <div class="form-group"><label>Acepta alumnos</label><select id="f-acepta"><option value="si">Sí</option><option value="no">No</option></select></div>
+        <div class="form-group"><label>Número de plazas</label><input type="number" id="f-plazas-num" min="0" placeholder="0"></div>
+        <div class="form-group"><label>Período</label><input type="text" id="f-periodo" placeholder="Ej: Febrero–Mayo"></div>
+        <div class="form-group"><label>Se necesita coche</label><select id="f-coche-req"><option value="no">No</option><option value="si">Sí</option></select></div>
         <div class="form-section-title">Convenio</div>
-        <div class="form-group">
-          <label>Estado del convenio</label>
-          <select id="f-convenio-est">
-            <option value="pendiente">Pendiente</option>
-            <option value="firmado">Firmado</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Fecha de convenio</label>
-          <input type="date" id="f-convenio-fecha">
-        </div>
-
+        <div class="form-group"><label>Estado del convenio</label><select id="f-convenio-est"><option value="pendiente">Pendiente</option><option value="firmado">Firmado</option></select></div>
+        <div class="form-group"><label>Fecha de convenio</label><input type="date" id="f-convenio-fecha"></div>
         <div class="form-section-title">Seguimiento</div>
-        <div class="form-group">
-          <label>Profesor/a último contacto</label>
-          <input type="text" id="f-profe" placeholder="Nombre del profesor/a">
-        </div>
-        <div class="form-group">
-          <label>Fecha último contacto</label>
-          <input type="date" id="f-fecha-contacto">
-        </div>
-        <div class="form-group full">
-          <label>Observaciones</label>
-          <textarea id="f-observaciones" placeholder="Notas adicionales..."></textarea>
-        </div>
+        <div class="form-group"><label>Profesor/a último contacto</label><input type="text" id="f-profe" placeholder="Nombre del profesor/a"></div>
+        <div class="form-group"><label>Fecha último contacto</label><input type="date" id="f-fecha-contacto"></div>
+        <div class="form-group full"><label>Observaciones</label><textarea id="f-observaciones" placeholder="Notas adicionales..."></textarea></div>
       </div>
       <div class="form-actions">
         <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Guardar empresa</button>
+        <button type="submit" class="btn btn-primary" id="btn-guardar">Guardar empresa</button>
       </div>
     </form>
   </div>
 </div>
 
-<!-- FICHA: DETALLE EMPRESA -->
+<!-- FICHA DETALLE -->
 <div class="ficha-overlay" id="ficha-empresa">
   <div class="ficha">
     <div class="modal-header">
@@ -450,35 +255,67 @@
   </div>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 <script>
-// ── DATOS ──────────────────────────────────────────────
-let empresas = JSON.parse(localStorage.getItem('empresas') || '[]');
+const API = 'https://script.google.com/a/macros/educacion.navarra.es/s/AKfycbyKOjMNbo0ew7Xzv4qYN5pvrc1EckMDjtZj6voRTnOEUI80qmjIAf8iglE3xv5GYNS8/exec';
+
+let empresas = [];
 let empresaEditandoIdx = null;
 let empresaViendoIdx = null;
 
+// ── TOAST ──────────────────────────────────────────────
+function toast(msg, dur = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
 // ── NAVEGACIÓN ─────────────────────────────────────────
-function mostrarPagina(id) {
+function mostrarPagina(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  if (btn) btn.classList.add('active');
 }
 
 function mostrarTab(tab) {
   ['empresas','alumnado','calendario'].forEach(t => {
     document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
     const btn = document.getElementById('tab-' + t + '-btn');
-    if (t === tab) {
-      btn.style.color = '#1a3a2a';
-      btn.style.borderBottom = '2px solid #1a3a2a';
-    } else {
-      btn.style.color = '';
-      btn.style.borderBottom = '2px solid transparent';
-    }
+    btn.style.color = t === tab ? '#1a3a2a' : '';
+    btn.style.borderBottom = t === tab ? '2px solid #1a3a2a' : '2px solid transparent';
   });
 }
 
-// ── RENDER LISTA ───────────────────────────────────────
+// ── API ────────────────────────────────────────────────
+async function cargarEmpresas() {
+  try {
+    const res = await fetch(API + '?action=get');
+    const json = await res.json();
+    if (json.ok) {
+      empresas = json.data;
+      filtrar();
+      actualizarStats();
+    } else {
+      document.getElementById('lista-empresas').innerHTML = '<div class="coming-soon"><div class="icon">⚠️</div><h3>Error al cargar</h3><p>' + (json.error || 'Inténtalo de nuevo') + '</p></div>';
+    }
+  } catch(err) {
+    document.getElementById('lista-empresas').innerHTML = '<div class="coming-soon"><div class="icon">⚠️</div><h3>Sin conexión</h3><p>No se pudo conectar con el servidor</p></div>';
+  }
+}
+
+async function apiPost(body) {
+  const res = await fetch(API, {
+    method: 'POST',
+    body: JSON.stringify(body)
+  });
+  return await res.json();
+}
+
+// ── RENDER ─────────────────────────────────────────────
 function renderLista(lista) {
   const cont = document.getElementById('lista-empresas');
   if (lista.length === 0) {
@@ -489,11 +326,12 @@ function renderLista(lista) {
     const plazas = parseInt(e.plazas) || 0;
     const ocupadas = parseInt(e.ocupadas) || 0;
     const libres = plazas - ocupadas;
-    let badgeClass = 'plazas-ok', badgeText = libres + ' libres';
-    if (libres === 0 && plazas > 0) { badgeClass = 'plazas-lleno'; badgeText = 'Completa'; }
-    else if (libres <= 1 && plazas > 0) { badgeClass = 'plazas-poco'; }
-    return `<div class="empresa-row${libres===0&&plazas>0?' sin-plazas':''}" onclick="verFicha(${idx})">
-      <div>
+    let badgeClass = 'plazas-ok', badgeText = libres + ' libre' + (libres !== 1 ? 's' : '');
+    if (plazas === 0) { badgeClass = 'plazas-poco'; badgeText = 'Sin definir'; }
+    else if (libres === 0) { badgeClass = 'plazas-lleno'; badgeText = 'Completa'; }
+    else if (libres === 1) { badgeClass = 'plazas-poco'; }
+    return `<div class="empresa-row" onclick="verFicha(${idx})">
+      <div style="flex:2">
         <div class="empresa-nombre">${e.nombre}</div>
         <div style="font-size:12px;color:#999;margin-top:2px;">${e.municipio || '—'}</div>
       </div>
@@ -510,14 +348,13 @@ function renderLista(lista) {
   }).join('');
 }
 
-function actualizarStats(lista) {
-  const todas = empresas;
-  const plazasTotal = todas.reduce((s,e) => s + (parseInt(e.plazas)||0), 0);
-  const ocupadasTotal = todas.reduce((s,e) => s + (parseInt(e.ocupadas)||0), 0);
-  document.getElementById('stat-total').textContent = todas.length;
+function actualizarStats() {
+  const plazasTotal = empresas.reduce((s,e) => s + (parseInt(e.plazas)||0), 0);
+  const ocupadasTotal = empresas.reduce((s,e) => s + (parseInt(e.ocupadas)||0), 0);
+  document.getElementById('stat-total').textContent = empresas.length;
   document.getElementById('stat-libres').textContent = plazasTotal - ocupadasTotal;
   document.getElementById('stat-ocupadas').textContent = ocupadasTotal;
-  document.getElementById('stat-sinconvenio').textContent = todas.filter(e => e.convenio !== 'firmado').length;
+  document.getElementById('stat-sinconvenio').textContent = empresas.filter(e => e.convenio !== 'firmado').length;
 }
 
 // ── FILTROS ────────────────────────────────────────────
@@ -529,10 +366,10 @@ function filtrar() {
   const convenio = document.getElementById('f-convenio').value;
 
   const resultado = empresas.map((e, i) => [i, e]).filter(([i, e]) => {
-    const matchBuscar = !buscar || e.nombre?.toLowerCase().includes(buscar) || e.municipio?.toLowerCase().includes(buscar);
+    const matchBuscar = !buscar || (e.nombre||'').toLowerCase().includes(buscar) || (e.municipio||'').toLowerCase().includes(buscar);
     const matchEsp = !esp || e.tipo === esp;
     const libres = (parseInt(e.plazas)||0) - (parseInt(e.ocupadas)||0);
-    const matchPlazas = !plazas || (plazas === 'libres' ? libres > 0 : libres === 0);
+    const matchPlazas = !plazas || (plazas === 'libres' ? libres > 0 : libres <= 0);
     const matchCoche = !coche || e.coche === coche;
     const matchConvenio = !convenio || e.convenio === convenio;
     return matchBuscar && matchEsp && matchPlazas && matchCoche && matchConvenio;
@@ -540,21 +377,18 @@ function filtrar() {
 
   document.getElementById('contador-resultado').textContent =
     resultado.length === empresas.length
-      ? `Mostrando las ${empresas.length} empresas`
+      ? `${empresas.length} empresa${empresas.length !== 1 ? 's' : ''} en total`
       : `Mostrando ${resultado.length} de ${empresas.length} empresas`;
 
   renderLista(resultado);
 }
 
 function resetFiltros() {
-  ['f-buscar','f-especialidad','f-plazas','f-coche','f-convenio'].forEach(id => {
-    const el = document.getElementById(id);
-    el.value = '';
-  });
+  ['f-buscar','f-especialidad','f-plazas','f-coche','f-convenio'].forEach(id => document.getElementById(id).value = '');
   filtrar();
 }
 
-// ── MODAL AÑADIR / EDITAR ──────────────────────────────
+// ── MODAL ──────────────────────────────────────────────
 function abrirModalNueva() {
   empresaEditandoIdx = null;
   document.getElementById('modal-titulo').textContent = 'Nueva empresa';
@@ -589,9 +423,13 @@ function cerrarModal() {
   document.getElementById('modal-empresa').classList.remove('open');
 }
 
-function guardarEmpresa(event) {
+async function guardarEmpresa(event) {
   event.preventDefault();
-  const empresa = {
+  const btn = document.getElementById('btn-guardar');
+  btn.textContent = 'Guardando...';
+  btn.disabled = true;
+
+  const data = {
     nombre: document.getElementById('f-nombre').value,
     tipo: document.getElementById('f-tipo').value,
     municipio: document.getElementById('f-municipio').value,
@@ -610,18 +448,31 @@ function guardarEmpresa(event) {
     fechaContacto: document.getElementById('f-fecha-contacto').value,
     observaciones: document.getElementById('f-observaciones').value,
   };
-  if (empresaEditandoIdx !== null) {
-    empresas[empresaEditandoIdx] = empresa;
-  } else {
-    empresas.push(empresa);
+
+  try {
+    let res;
+    if (empresaEditandoIdx !== null) {
+      data._row = empresas[empresaEditandoIdx]._row;
+      res = await apiPost({ action: 'update', data });
+    } else {
+      res = await apiPost({ action: 'add', data });
+    }
+    if (res.ok) {
+      toast(empresaEditandoIdx !== null ? '✔ Empresa actualizada' : '✔ Empresa añadida');
+      cerrarModal();
+      await cargarEmpresas();
+    } else {
+      toast('⚠ Error: ' + (res.error || 'inténtalo de nuevo'));
+    }
+  } catch(e) {
+    toast('⚠ Error de conexión');
   }
-  guardarLocal();
-  cerrarModal();
-  filtrar();
-  actualizarStats();
+
+  btn.textContent = 'Guardar empresa';
+  btn.disabled = false;
 }
 
-// ── FICHA DETALLE ──────────────────────────────────────
+// ── FICHA ──────────────────────────────────────────────
 function verFicha(idx) {
   empresaViendoIdx = idx;
   const e = empresas[idx];
@@ -646,7 +497,7 @@ function verFicha(idx) {
     <div class="ficha-campo"><span>Período</span><span>${e.periodo||'—'}</span></div>
     <div class="ficha-campo"><span>Coche necesario</span><span>${e.coche==='si'?'🚗 Sí':'No'}</span></div>
     <div class="ficha-campo full">
-      <span>Plazas: ${ocupadas} ocupadas / ${plazas} totales (${libres} libres)</span>
+      <span>Plazas: ${ocupadas} ocupadas / ${plazas} totales — ${libres} libre${libres!==1?'s':''}</span>
       <div class="barra-plazas"><div class="barra-fill" style="width:${pct}%;background:${color};"></div></div>
     </div>
     <div class="ficha-section">Convenio</div>
@@ -660,32 +511,28 @@ function verFicha(idx) {
   document.getElementById('ficha-empresa').classList.add('open');
 }
 
-function cerrarFicha() {
-  document.getElementById('ficha-empresa').classList.remove('open');
-}
+function cerrarFicha() { document.getElementById('ficha-empresa').classList.remove('open'); }
+function editarEmpresaActual() { cerrarFicha(); abrirModalEditar(empresaViendoIdx); }
 
-function editarEmpresaActual() {
-  cerrarFicha();
-  abrirModalEditar(empresaViendoIdx);
-}
-
-function eliminarEmpresa() {
-  if (!confirm('¿Seguro que quieres eliminar esta empresa?')) return;
-  empresas.splice(empresaViendoIdx, 1);
-  guardarLocal();
-  cerrarFicha();
-  filtrar();
-  actualizarStats();
-}
-
-// ── PERSISTENCIA ───────────────────────────────────────
-function guardarLocal() {
-  localStorage.setItem('empresas', JSON.stringify(empresas));
+async function eliminarEmpresa() {
+  if (!confirm('¿Seguro que quieres eliminar esta empresa? Esta acción no se puede deshacer.')) return;
+  const e = empresas[empresaViendoIdx];
+  try {
+    const res = await apiPost({ action: 'delete', row: e._row });
+    if (res.ok) {
+      toast('🗑 Empresa eliminada');
+      cerrarFicha();
+      await cargarEmpresas();
+    } else {
+      toast('⚠ Error al eliminar');
+    }
+  } catch(err) {
+    toast('⚠ Error de conexión');
+  }
 }
 
 // ── INICIO ─────────────────────────────────────────────
-filtrar();
-actualizarStats();
+cargarEmpresas();
 </script>
 </body>
 </html>
